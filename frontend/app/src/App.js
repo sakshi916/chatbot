@@ -22,11 +22,16 @@ button.addEventListener('keydown', function(event) {
 
   const fetchData = async (req2) => {
       try {
+        /* //for streaming
+        const source = new EventSource(`http://localhost:8080/api/chat/stream?message=${req2}`);
+        source.onmessage = async (event) => {
+            await new Promise(r => setTimeout(r, 30));
+            setRes(prev => prev + " " + event.data); // append each token
+        };
+        source.onerror = () => source.close();
+        */
         
-        // Making a GET request to a free dummy API
         const response = await axios.post('http://localhost:8080/query',req2);
-        
-        // Axios automatically parses JSON, data is available in response.data
         setRes(response.data); 
       } catch (err) {
         console.log(err)
@@ -35,6 +40,7 @@ button.addEventListener('keydown', function(event) {
 
  
   const submitReq=()=>{
+    //setRes('')  //for streaming
     fetchData(inputRef.current.value);
     inputRef.current.value = ''; 
   }
